@@ -18,9 +18,9 @@ ngMap.directive('map', ['Attr2Options', '$parse', 'NavigatorGeolocation', 'GeoCo
           var filtered = parser.filter(attrs);
           var mapOptions = parser.getOptions(filtered);
           var controlOptions = parser.getControlOptions(filtered);
-          for (key in controlOptions) {
-            mapOptions[key] = controlOptions[key];
-          }
+          angular.forEach(controlOptions, function(controlOption, key){
+            mapOptions[key] = controlOption;
+          });
 
           var _this = this;
 
@@ -34,12 +34,12 @@ ngMap.directive('map', ['Attr2Options', '$parse', 'NavigatorGeolocation', 'GeoCo
             var savedCenter = mapOptions.center;
             delete mapOptions.center; //cannot show map with center as string
           }
-          
-          for (var name in this.controls) {
-            mapOptions[name+"Control"] = this.controls[name].enabled === "false" ? 0:1;
-            delete this.controls[name].enabled;
-            mapOptions[name+"ControlOptions"] = this.controls[name];
-          }
+
+          angular.forEach(this.controls, function(control, name) {
+             mapOptions[name+"Control"] = control.enabled === "false" ? 0:1;
+             delete this.control.enabled;
+             mapOptions[name+"ControlOptions"] = control;
+          });
           
           console.log("mapOptions", mapOptions);
           // create a new div for map portion, so it does not touch map element at all.
@@ -66,9 +66,9 @@ ngMap.directive('map', ['Attr2Options', '$parse', 'NavigatorGeolocation', 'GeoCo
           //map events
           var events = parser.getEvents(scope, filtered);
           console.log("mapEvents", events);
-          for (var eventName in events) {
-            google.maps.event.addListener(_this.map, eventName, events[eventName]);
-          }
+          angular.forEach(events, function(event, eventName) {
+             google.maps.event.addListener(_this.map, eventName, event);
+          });
 
           //assign map to parent scope  
           scope.map = _this.map;

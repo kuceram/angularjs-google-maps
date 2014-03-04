@@ -22,9 +22,9 @@ ngMap.directive('infoWindow', [ 'Attr2Options',
          * set infoWindow events
          */
         var events = parser.getEvents(scope, filtered);
-        for(var eventName in events) {
-          google.maps.event.addListener(infoWindow, eventName, events[eventname]);
-        }
+        angular.forEach(events, function(event, eventName){
+          google.maps.event.addListener(infoWindow, eventName, event);
+        });
 
         // set infoWindows to map controller
         mapController.infoWindows.push(infoWindow);

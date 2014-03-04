@@ -61,9 +61,9 @@ ngMap.directive('shape', ['Attr2Options', function(Attr2Options) {
       //shape events
       var events = parser.getEvents(scope, filtered);
       console.log("shape", shapeName, "events", events);
-      for (var eventName in events) {
-        google.maps.event.addListener(shape, eventName, events[eventName]);
-      }
+      angular.forEach(events, function(event, eventName) {
+         google.maps.event.addListener(shape, eventName, event);
+      });
     }
    };
 }]);

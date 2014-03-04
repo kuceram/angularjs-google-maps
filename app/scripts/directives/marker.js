@@ -14,9 +14,9 @@ ngMap.directive('marker', [ 'Attr2Options', 'GeoCoder', 'NavigatorGeolocation',
           var marker = new google.maps.Marker(markerOptions);
           if (Object.keys(markerEvents).length > 0)
             console.log("markerEvents", markerEvents);
-          for (var eventName in markerEvents) {
-            google.maps.event.addListener(marker, eventName, markerEvents[eventName]);
-          }
+          angular.forEach(markerEvents, function(markerEvent, eventName) {
+            google.maps.event.addListener(marker, eventName, markerEvent);
+          });
           return marker;
         };
 
